@@ -681,7 +681,7 @@ bool ImGui::ButtonBehavior(const ImRect& bb, ImGuiID id, bool* out_hovered, bool
     return pressed;
 }
 
-bool ImGui::ButtonEx(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags)
+bool ImGui::ButtonEx(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool round)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -711,7 +711,7 @@ bool ImGui::ButtonEx(const char* label, const ImVec2& size_arg, ImGuiButtonFlags
     // Render
     const ImU32 col = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
     RenderNavHighlight(bb, id);
-    RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+    RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding, round);
 
     if (g.LogEnabled)
         LogSetNextTextDecoration("[", "]");
@@ -725,9 +725,9 @@ bool ImGui::ButtonEx(const char* label, const ImVec2& size_arg, ImGuiButtonFlags
     return pressed;
 }
 
-bool ImGui::Button(const char* label, const ImVec2& size_arg)
+bool ImGui::Button(const char* label, const ImVec2& size_arg, bool round)
 {
-    return ButtonEx(label, size_arg, ImGuiButtonFlags_None);
+    return ButtonEx(label, size_arg, ImGuiButtonFlags_None, round);
 }
 
 // Small buttons fits within text without additional vertical spacing.

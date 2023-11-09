@@ -3416,11 +3416,22 @@ void ImGui::RenderTextEllipsis(ImDrawList* draw_list, const ImVec2& pos_min, con
 }
 
 // Render a rectangle shaped with optional rounding and borders
-void ImGui::RenderFrame(ImVec2 p_min, ImVec2 p_max, ImU32 fill_col, bool border, float rounding)
+void ImGui::RenderFrame(ImVec2 p_min, ImVec2 p_max, ImU32 fill_col, bool border, float rounding, bool round_buttom)
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
-    window->DrawList->AddRectFilled(p_min, p_max, fill_col, rounding);
+
+    if (!round_buttom)
+    {
+        window->DrawList->AddRectFilled(p_min, p_max, fill_col, rounding);
+    }
+    else
+    {
+        ImVec2 center = { (p_min.x + p_max.x) * .5f, (p_min.y + p_max.y) * .5f };
+        float  radius = abs((long)p_min.y - (long)p_max.y) * .5f;
+        window->DrawList->AddCircleFilled(center, radius, fill_col);
+    }
+
     const float border_size = g.Style.FrameBorderSize;
     if (border && border_size > 0.0f)
     {
